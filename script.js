@@ -8,6 +8,7 @@ var gameIsRunning = false;//запущена ли игра(пока нет-false
 var snake_timer;//таймер змейки
 var food_timer; //таймер для еды(появление корма)
 var score = 0;//результат (счет игры - сколько корма съела змея)
+var bomb_timer;// таймер бомбы
 
 function init() {
     prepareGameField(); //Гнерация поля
@@ -67,6 +68,7 @@ function startGame() {
 
     snake_timer = setInterval(move, SNAKE_SPEED); // каждые 200мс запускае фун-ю move
     setTimeout(createFood, 5000);
+    bomb_timer = setInterval(createBomb, 6000);//каждые 250мс появляется бомба
 }
 
 /**
@@ -141,6 +143,11 @@ function move() {
             removed.setAttribute('class', classes[0] + ' ' + classes[1]);
             // removed.classlist.remove('snake-unit');
         }
+        // Если попал в бомбу то игра завершается
+        if (haveBomb(new_unit)) {
+            finishTheGame();
+
+        }
     }
     else {
         finishTheGame();
@@ -208,6 +215,48 @@ function createFood() {
     }
 }
 
+//  содаем бомбочки
+
+function createBomb() {
+    var bombCreated = false;
+
+    while (!bombCreated) {//пока еду не создали
+        // рандом
+        var bomb_x = Math.floor(Math.random() * FIELD_SIZE_X);
+        var bomb_y = Math.floor(Math.random() * FIELD_SIZE_Y);
+
+        var bomb_cell = document.getElementsByClassName('cell-' + bomb_y + '-' + bomb_x)[0];
+        var bomb_cell_classes = bomb_cell.getAttribute('class').split(' ');
+
+        //проверка на змеку
+        if (!bomb_cell_classes.includes('snake_unit')) {
+            var classes = '';
+            for (var i = 0; i < bomb_cell_classes.length; i++) {
+                classes += bomb_cell_classes[i] + ' ';
+            }
+            bomb_cell.setAttribute('class', classes + 'bomb-unit');
+            // bomb_cell.classList('.bomb-unit');
+            bombCreated = true;
+        }
+
+    }
+}
+
+// проверяем не в бомбочке ли
+
+function haveBomb(unit) {
+    var check = false;
+
+    var unit_classes = unit.getAttribute('class').split(' ');
+
+    // если бомба
+    if (unit_classes.includes('bomb-unit')) {
+        check = true;
+        finishTheGame;
+    }
+    return check;
+}
+
 /*
 Изменение направления движения змейки
 @param e - событие
@@ -244,6 +293,7 @@ function changeDirection(e) {
 function finishTheGame() {
     gameIsRunning = false;
     clearInterval(snake_timer);
+    clearInterval(bomb_timer);// останавливаем таймер бомбы
     alert('Вы проиграли! Ваш результат: ' + score.toString());
 
 }

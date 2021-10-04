@@ -30,6 +30,10 @@ td.game-table-cell{
 .food-unit{
     background-color: red;
 }
+
+.bomb-unit{
+    background-color: rgb(230, 226, 16);
+}
 .buttons{
     display: inline-block;
 }
@@ -37,4 +41,10 @@ td.game-table-cell{
 .wrap{
     margin: 30px auto 0;
     text-align: center;
+}
+#count {
+    width: 150px;
+    height: 40px;
+    background-color: hotpink;
+    margin: 80px auto;
 }
