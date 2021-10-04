@@ -183,6 +183,9 @@ function haveFood(unit) {
         check = true;
         createFood();
         score++;
+        var elem = document.getElementsByClassName('count');
+        // var textElem = document.createTextNode('Ваша очко ' + score);
+        elem[0].innerHTML = ('Ваша очко ' + score);
     }
     return check;
 }

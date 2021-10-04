@@ -42,7 +42,7 @@ td.game-table-cell{
     margin: 30px auto 0;
     text-align: center;
 }
-#count {
+.count {
     width: 150px;
     height: 40px;
     background-color: hotpink;
